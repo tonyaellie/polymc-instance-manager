@@ -8,7 +8,7 @@ import rimraf from 'rimraf';
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const {
     query: { id },
-    method
+    method,
   } = req;
   if (Array.isArray(id)) {
     return res.status(400).end('error invalid id');
@@ -27,7 +27,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
       res.writeHead(200, {
         'Content-Disposition': `attachment; filename="${fileName}"`,
-        'Content-Type': fileType
+        'Content-Type': fileType,
       });
 
       const download = zip.toBuffer();
@@ -53,4 +53,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       res.setHeader('Allow', ['GET', 'DELETE']);
       res.status(405).end(`Method ${method} Not Allowed`);
   }
+};
+
+export const config = {
+  api: {
+    responseLimit: false,
+  },
 };
